@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엘니뇨와 라니냐 학습 페이지</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    line-height: 1.7;
+    color: #333;
+    background: #f0f7f4;
+    padding: 16px;
+  }
+  .container { max-width: 720px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  h1 { font-size: 1.6rem; color: #1565c0; text-align: center; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: #777; margin-bottom: 24px; }
+  h2 { font-size: 1.2rem; color: #0d47a1; margin: 24px 0 10px; border-left: 4px solid #42a5f5; padding-left: 10px; }
+  p { margin-bottom: 10px; }
+  .box { background: #e3f2fd; border-radius: 8px; padding: 14px; margin: 10px 0; }
+  /* 탐구활동 */
+  #simArea { background: #e1f5fe; border-radius: 10px; padding: 16px; margin-top: 12px; }
+  .wind-label { font-weight: bold; text-align: center; display: block; margin-bottom: 6px; }
+  input[type=range] { width: 100%; }
+  .scale { display: flex; justify-content: space-between; font-size: 0.8rem; color: #555; }
+  .windArrow { text-align: center; font-size: 1.6rem; letter-spacing: 4px; color: #1565c0; margin: 8px 0; min-height: 2rem; }
+  .pacific { display: flex; gap: 10px; margin-top: 12px; }
+  .region { flex: 1; background: #fff; border-radius: 8px; padding: 12px; text-align: center; border: 2px solid #90caf9; }
+  .region h3 { font-size: 1rem; margin-bottom: 6px; }
+  .temp { font-size: 1.4rem; font-weight: bold; }
+  .press { font-size: 0.95rem; color: #555; }
+  .state { margin-top: 12px; padding: 10px; background: #fff8e1; border-radius: 8px; font-weight: bold; text-align: center; }
+  /* 문제 */
+  .q { background: #fafafa; border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin: 12px 0; }
+  .q p { font-weight: bold; }
+  .q label { display: block; padding: 6px 4px; cursor: pointer; }
+  #submitBtn, #retryBtn { display: block; width: 100%; padding: 12px; margin-top: 14px; font-size: 1rem; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; }
+  #submitBtn { background: #1976d2; color: #fff; }
+  #retryBtn { background: #757575; color: #fff; display: none; }
+  #result { margin-top: 14px; padding: 14px; border-radius: 8px; display: none; }
+  .explain { margin-top: 10px; font-size: 0.9rem; color: #444; background: #f5f5f5; padding: 8px; border-radius: 6px; }
+  @media (max-width: 480px) {
+    h1 { font-size: 1.3rem; }
+    .pacific { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>엘니뇨와 라니냐</h1>
+  <p class="subtitle">고등학교 1학년 지구과학 · 기권과 해수의 상호작용</p>
+
+  <h2>① 학습 목표</h2>
+  <div class="box">무역풍의 약화와 강화가 일어날 때 태평양 적도 지역의 기후가 어떻게 달라지는지 설명할 수 있다.</div>
+
+  <h2>② 핵심 개념</h2>
+  <div class="box">
+    <p><strong>평상시:</strong> 무역풍이 서쪽으로 따뜻한 표층수를 밀어내어 서태평양(인도네시아 부근)은 수온이 높고 강수량이 많으며, 동태평양(페루 부근)은 용승이 활발해 수온이 낮고 건조하다.</p>
+    <p><strong>엘니뇨 (무역풍 약화):</strong> 무역풍이 약해지면 따뜻한 바닷물이 동쪽으로 이동하여 동태평양 수온이 평상시보다 높아지고, 동태평양은 폭우·홍수, 서태평양은 가뭄이 발생한다.</p>
+    <p><strong>라니냐 (무역풍 강화):</strong> 무역풍이 강해지면 동쪽으로 밀리는 따뜻한 물이 더 많아지고 동태평양의 용승이 강화되어 동태평양은 더 건조해지고 서태평양은 폭우가 심해진다.</p>
+  </div>
+
+  <h2>③ 탐구 활동: 무역풍과 태평양 기후</h2>
+  <p>슬라이더를 움직여 무역풍의 세기를 조절하고, 동태평양과 서태평양의 온도·기압이 어떻게 달라지는지 관찰해 보자.</p>
+  <div id="simArea">
+    <span class="wind-label">무역풍의 세기: <span id="windVal">보통</span></span>
+    <input type="range" id="windSlider" min="0" max="100" value="50" aria-label="무역풍 세기">
+    <div class="scale"><span>매우 약함<br>(엘니뇨)</span><span>보통</span><span>매우 강함<br>(라니냐)</span></div>
+    <div class="windArrow" id="windArrow">→ → → → →</div>
+    <div class="pacific">
+      <div class="region">
+        <h3>서태평양<br>(인도네시아)</h3>
+        <div class="temp" id="westTemp">28°C</div>
+        <div class="press" id="westPress">기압: 낮음</div>
+        <div>강수: <span id="westRain">많음</span></div>
+      </div>
+      <div class="region">
+        <h3>동태평양<br>(페루)</h3>
+        <div class="temp" id="eastTemp">22°C</div>
+        <div class="press" id="eastPress">기압: 높음</div>
+        <div>강수: <span id="eastRain">적음</span></div>
+      </div>
+    </div>
+    <div class="state" id="stateMsg">평상시와 비슷한 상태야.</div>
+  </div>
+
+  <h2>④ 확인 문제</h2>
+  <form id="quizForm">
+    <div class="q">
+      <p>1. 엘니뇨가 발생할 때 동태평양에서 나타나는 현상으로 옳은 것은?</p>
+      <label><input type="radio" name="q1" value="0"> ① 수온이 높아지고 홍수가 발생한다.</label>
+      <label><input type="radio" name="q1" value="1"> ② 용승이 강화되어 수온이 낮아진다.</label>
+      <label><input type="radio" name="q1" value="2"> ③ 무역풍이 강해진다.</label>
+      <label><input type="radio" name="q1" value="3"> ④ 기압이 높아지고 가뭄이 계속된다.</label>
+    </div>
+    <div class="q">
+      <p>2. 무역풍이 강해질 때(라니냐) 서태평양의 기후 변화로 옳은 것은?</p>
+      <label><input type="radio" name="q2" value="0"> ① 수온이 낮아지고 가뭄이 심해진다.</label>
+      <label><input type="radio" name="q2" value="1"> ② 수온이 높아지고 강수량이 증가한다.</label>
+      <label><input type="radio" name="q2" value="2"> ③ 기압이 높아지고 건조해진다.</label>
+      <label><input type="radio" name="q2" value="3"> ④ 강수량이 줄어든다.</label>
+    </div>
+    <div class="q">
+      <p>3. 평상시 동태평양의 표층 수온이 낮은 주된 이유는?</p>
+      <label><input type="radio" name="q3" value="0"> ① 차가운 바람이 불기 때문이다.</label>
+      <label><input type="radio" name="q3" value="1"> ② 무역풍으로 따뜻한 물이 서쪽으로 이동하고 용승이 일어나기 때문이다.</label>
+      <label><input type="radio" name="q3" value="2"> ③ 태양 복사가 적기 때문이다.</label>
+      <label><input type="radio" name="q3" value="3"> ④ 해수가 증발하지 않기 때문이다.</label>
+    </div>
+    <button type="submit" id="submitBtn">제출하기</button>
+    <button type="button" id="retryBtn">재도전하기</button>
+  </form>
+  <div id="result"></div>
+</div>
+
+<script>
+const slider = document.getElementById('windSlider');
+const windVal = document.getElementById('windVal');
+const windArrow = document.getElementById('windArrow');
+const westTemp = document.getElementById('westTemp');
+const eastTemp = document.getElementById('eastTemp');
+const westPress = document.getElementById('westPress');
+const eastPress = document.getElementById('eastPress');
+const westRain = document.getElementById('westRain');
+const eastRain = document.getElementById('eastRain');
+const stateMsg = document.getElementById('stateMsg');
+
+function updateSim() {
+  const v = parseInt(slider.value);
+  if (v < 35) { // 엘니뇨
+    windVal.textContent = '약함 (엘니뇨)';
+    windArrow.textContent = v < 15 ? '· · ·' : '→  →';
+    westTemp.textContent = '24°C'; eastTemp.textContent = '27°C';
+    westTemp.style.color = '#1565c0'; eastTemp.style.color = '#d32f2f';
+    westPress.textContent = '기압: 높음'; eastPress.textContent = '기압: 낮음';
+    westRain.textContent = '적음 (가뭄)'; eastRain.textContent = '많음 (홍수)';
+    stateMsg.textContent = '🌬 무역풍이 약해지면 → 엘니뇨: 동태평양이 따뜻해지고 폭우!';
+    stateMsg.style.background = '#ffcdd2';
+  } else if (v > 65) { // 라니냐
+    windVal.textContent = '강함 (라니냐)';
+    windArrow.textContent = '→ → → → → → →';
+    westTemp.textContent = '30°C'; eastTemp.textContent = '19°C';
+    westTemp.style.color = '#d32f2f'; eastTemp.style.color = '#1565c0';
+    westPress.textContent = '기압: 매우 낮음'; eastPress.textContent = '기압: 매우 높음';
+    westRain.textContent = '매우 많음 (홍수)'; eastRain.textContent = '매우 적음 (가뭄)';
+    stateMsg.textContent = '💨 무역풍이 강해지면 → 라니냐: 서태평양 폭우, 동태평양 가뭄!';
+    stateMsg.style.background = '#c8e6c9';
+  } else { // 평상시
+    windVal.textContent = '보통';
+    windArrow.textContent = '→ → → → →';
+    westTemp.textContent = '28°C'; eastTemp.textContent = '22°C';
+    westTemp.style.color = '#d32f2f'; eastTemp.style.color = '#1565c0';
+    westPress.textContent = '기압: 낮음'; eastPress.textContent = '기압: 높음';
+    westRain.textContent = '많음'; eastRain.textContent = '적음';
+    stateMsg.textContent = '평상시와 비슷한 상태야.';
+    stateMsg.style.background = '#fff8e1';
+  }
+}
+slider.addEventListener('input', updateSim);
+updateSim();
+
+const answers = ['0', '1', '1'];
+const explains = [
+  '엘니뇨 때 무역풍이 약해지면 동태평양 수온이 높아지고 비가 많아져 홍수가 발생한다.',
+  '라니냐 때 무역풍이 강해지면 서태평양으로 따뜻한 물이 더 많이 모여 수온이 높아지고 강수량이 증가한다.',
+  '무역풍이 따뜻한 표층수를 서쪽으로 밀어내고 그 자리를 차가운 심층수가 용승하여 동태평양 수온이 낮아진다.'
+];
+
+document.getElementById('quizForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let score = 0;
+  let html = '';
+  for (let i = 0; i < 3; i++) {
+    const checked = document.querySelector(`input[name="q${i+1}"]:checked`);
+    const user = checked ? checked.value : null;
+    if (user === answers[i]) score++;
+    html += `<p><strong>문제 ${i+1}: ${user === answers[i] ? '⭕ 정답' : '❌ 오답'}</strong></p><div class="explain">해설: ${explains[i]}</div>`;
+  }
+  const result = document.getElementById('result');
+  result.innerHTML = `<h3>결과: 3문제 중 ${score}개 정답!</h3>` + html;
+  result.style.display = 'block';
+  result.style.background = score === 3 ? '#c8e6c9' : (score >= 2 ? '#fff9c4' : '#ffcdd2');
+  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('retryBtn').style.display = 'block';
+  result.scrollIntoView({behavior: 'smooth'});
+});
+
+document.getElementById('retryBtn').addEventListener('click', function() {
+  document.getElementById('quizForm').reset();
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('submitBtn').style.display = 'block';
+  this.style.display = 'none';
+});
+</script>
+</body>
+</html>
